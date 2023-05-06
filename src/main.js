@@ -135,9 +135,18 @@ document.querySelector("form").addEventListener("submit", (event) => {
 
 // Card name
 const cardHolder = document.querySelector("#card-holder")
-cardHolder.addEventListener("input", () => {
-  const ccHolder = document.querySelector(".cc-holder .value")
+const cardHolderPatter = {
+  mask: "******************************",
+  regex: /"^[a-zA-Z \b\0]+$"/,
+}
 
-  ccHolder.innerText =
-    cardHolder.value.length === 0 ? "FULANO DA SILVA" : cardHolder.value
+const cardHolderMasked = IMask(cardHolder, cardHolderPatter)
+
+cardHolderMasked.on("accept", () => {
+  updateCardHolder(cardHolderMasked.value)
 })
+
+function updateCardHolder(value) {
+  const ccHolder = document.querySelector(".cc-holder .value")
+  ccHolder.innerText = value.length === 0 ? "FULANO DA SILVA" : value
+}
